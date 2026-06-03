@@ -2,3 +2,7 @@ node_modules/
 voting.db
 .env
 .DS_Store
+.vercel
+.cloudflared.log
+.cloudflared.pid
+.vercel

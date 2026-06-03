@@ -4,16 +4,17 @@ import Database from "better-sqlite3";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { existsSync } from "fs";
-import { spawnSync } from "child_process";
+import { seedDatabase } from "./seed-lib.js";
 import { CATEGORIES } from "./seed-data.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const dbPath = join(__dirname, "voting.db");
+const dbPath =
+  process.env.DATABASE_PATH ||
+  (process.env.VERCEL ? join("/tmp", "voting.db") : join(__dirname, "voting.db"));
 
 if (!existsSync(dbPath)) {
   console.log("No database found — seeding…");
-  const result = spawnSync("node", ["seed.js"], { cwd: __dirname, stdio: "inherit" });
-  if (result.status !== 0) process.exit(result.status || 1);
+  seedDatabase(dbPath);
 }
 
 const db = new Database(dbPath);
