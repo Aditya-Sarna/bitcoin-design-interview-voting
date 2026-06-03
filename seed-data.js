@@ -1,0 +1,392 @@
+/** AI-Age Refresh of Bitcoin.Design — Final Research Interview Framework (53 questions, 11 categories) */
+
+export const CATEGORIES = [
+  { id: "builder-identity", label: "Builder identity & product context", short: "Category 1", color: "#ecfdf5", text: "#065f46", objective: "Understand who the participant is as a builder, what kinds of systems they work on, and the context in which their workflows and AI usage patterns exist." },
+  { id: "product-workflow", label: "Product development workflow", short: "Category 2", color: "#eff6ff", text: "#1e40af", objective: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity." },
+  { id: "decision-uncertainty", label: "Decision-making under uncertainty", short: "Category 3", color: "#f0fdf4", text: "#166534", objective: "Understand how builders make product and design decisions when information is incomplete, ambiguous, or conflicting." },
+  { id: "friction-recovery", label: "Friction, failure & recovery systems", short: "Category 4", color: "#fef2f2", text: "#991b1b", objective: "Identify where workflows break down, what causes momentum loss, and how builders recover from technical, informational, or strategic obstacles." },
+  { id: "ai-adoption", label: "AI adoption & workflow transformation", short: "Category 5", color: "#fff7ed", text: "#9a3412", objective: "Understand how AI tools have changed development behavior, workflow architecture, and the distribution of human versus machine labor." },
+  { id: "ai-tooling", label: "AI tooling & model orchestration", short: "Category 6", color: "#fdf4ff", text: "#86198f", objective: "Map how builders structure AI tool ecosystems, assign different models to different tasks, and manage multi-model workflows." },
+  { id: "ai-trust", label: "AI trust, verification & failure modes", short: "Category 7", color: "#fefce8", text: "#854d0e", objective: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development." },
+  { id: "context-engineering", label: "Context engineering & agent-ready workflows", short: "Category 8", color: "#f5f3ff", text: "#5b21b6", objective: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows." },
+  { id: "bitcoin-ux-gaps", label: "Bitcoin UX knowledge & documentation gaps", short: "Category 9", color: "#fffbeb", text: "#92400e", objective: "Identify missing knowledge infrastructure, under-documented UX problems, and ecosystem-wide documentation weaknesses." },
+  { id: "trust-authority", label: "Trust, authority & knowledge validation", short: "Category 10", color: "#ecfeff", text: "#155e75", objective: "Understand how builders decide what information is trustworthy, current, and actionable in a rapidly evolving ecosystem." },
+  { id: "future-bitcoin-design", label: "Future of Bitcoin.Design in the AI era", short: "Category 11", color: "#fdf2f8", text: "#9d174d", objective: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments." },
+];
+
+function q(num, category, text, meta) {
+  return { num, category, text, ...meta };
+}
+
+export const QUESTIONS = [
+  q(1, "builder-identity", "What kinds of products, systems, or tools do you usually work on as a builder, and what role does Bitcoin play within those projects?", {
+    intention: "Understand who the participant is as a builder, what kinds of systems they work on, and the context in which their workflows and AI usage patterns exist.",
+    subThemes: "Category 1: Builder identity & product context",
+    directional: "",
+    probes: [],
+  }),
+  q(2, "builder-identity", "What role do you usually play in projects, for example designer, engineer, product strategist, researcher, founder, or some combination, and how does that shape the way you work?", {
+    intention: "Understand who the participant is as a builder, what kinds of systems they work on, and the context in which their workflows and AI usage patterns exist.",
+    subThemes: "Category 1: Builder identity & product context",
+    directional: "",
+    probes: [],
+  }),
+  q(3, "product-workflow", "How would you describe your overall approach to building products? Do you tend to operate through structured planning systems, or through more exploratory and iterative experimentation?", {
+    intention: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity.",
+    subThemes: "Category 2: Product development workflow",
+    directional: "",
+    probes: [],
+  }),
+  q(4, "product-workflow", "When you begin a new project, what usually happens first in practice: research, ideation, prototyping, technical experimentation, market validation, or something else entirely?", {
+    intention: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity.",
+    subThemes: "Category 2: Product development workflow",
+    directional: "",
+    probes: [],
+  }),
+  q(5, "product-workflow", "Can you walk me through your full development process from idea to launch, describing the actual stages as you personally experience them rather than the idealized version?", {
+    intention: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity.",
+    subThemes: "Category 2: Product development workflow",
+    directional: "",
+    probes: [],
+  }),
+  q(6, "product-workflow", "How much planning typically happens before you begin writing code or designing interfaces, and what does that planning process actually look like in practice?", {
+    intention: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity.",
+    subThemes: "Category 2: Product development workflow",
+    directional: "",
+    probes: [],
+  }),
+  q(7, "product-workflow", "How do you determine that a stage of development is good enough to move forward, and what standards, signals, or checkpoints influence that decision?", {
+    intention: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity.",
+    subThemes: "Category 2: Product development workflow",
+    directional: "",
+    probes: [],
+  }),
+  q(8, "product-workflow", "How often do you revisit earlier stages during development, and what usually triggers the decision to go backward and rethink something?", {
+    intention: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity.",
+    subThemes: "Category 2: Product development workflow",
+    directional: "",
+    probes: [],
+  }),
+  q(9, "product-workflow", "Are your workflows relatively consistent across projects, or do you find yourself rebuilding your process from scratch depending on the product, context, or team?", {
+    intention: "Map how builders actually move from ideas to shipped products, including planning behavior, iteration patterns, execution systems, and workflow maturity.",
+    subThemes: "Category 2: Product development workflow",
+    directional: "",
+    probes: [],
+  }),
+  q(10, "decision-uncertainty", "When you need to make important design or product decisions under uncertainty, what does your reasoning process actually look like in practice?", {
+    intention: "Understand how builders make product and design decisions when information is incomplete, ambiguous, or conflicting.",
+    subThemes: "Category 3: Decision-making under uncertainty",
+    directional: "",
+    probes: [],
+  }),
+  q(11, "decision-uncertainty", "Before deciding that an idea is worth building, what questions do you typically ask yourself, and how do you evaluate whether the opportunity is meaningful enough to pursue?", {
+    intention: "Understand how builders make product and design decisions when information is incomplete, ambiguous, or conflicting.",
+    subThemes: "Category 3: Decision-making under uncertainty",
+    directional: "",
+    probes: [],
+  }),
+  q(12, "decision-uncertainty", "When you do not have enough information to confidently make a decision, do you tend to rely more on frameworks, external validation, AI assistance, experimentation, instinct, or some combination of those approaches?", {
+    intention: "Understand how builders make product and design decisions when information is incomplete, ambiguous, or conflicting.",
+    subThemes: "Category 3: Decision-making under uncertainty",
+    directional: "",
+    probes: [],
+  }),
+  q(13, "friction-recovery", "Can you describe a recent moment where you felt genuinely stuck during development, including what triggered the problem and how the situation eventually resolved?", {
+    intention: "Identify where workflows break down, what causes momentum loss, and how builders recover from technical, informational, or strategic obstacles.",
+    subThemes: "Category 4: Friction, failure & recovery systems",
+    directional: "",
+    probes: [],
+  }),
+  q(14, "friction-recovery", "Where do you experience the greatest friction during the development process, whether technically, informationally, creatively, organizationally, or in terms of decision confidence?", {
+    intention: "Identify where workflows break down, what causes momentum loss, and how builders recover from technical, informational, or strategic obstacles.",
+    subThemes: "Category 4: Friction, failure & recovery systems",
+    directional: "",
+    probes: [],
+  }),
+  q(15, "friction-recovery", "When you hit a serious block or lose momentum during a project, what does your recovery process actually look like, and what tools, systems, or resources help you regain progress?", {
+    intention: "Identify where workflows break down, what causes momentum loss, and how builders recover from technical, informational, or strategic obstacles.",
+    subThemes: "Category 4: Friction, failure & recovery systems",
+    directional: "",
+    probes: [],
+  }),
+  q(16, "ai-adoption", "How has AI meaningfully changed the way you build products, including tasks you now do differently, tasks you no longer do, and responsibilities AI has effectively absorbed?", {
+    intention: "Understand how AI tools have changed development behavior, workflow architecture, and the distribution of human versus machine labor.",
+    subThemes: "Category 5: AI adoption & workflow transformation",
+    directional: "",
+    probes: [],
+  }),
+  q(17, "ai-adoption", "How long have you been seriously using AI-assisted tools in your workflow, and how has your relationship with those tools evolved over time?", {
+    intention: "Understand how AI tools have changed development behavior, workflow architecture, and the distribution of human versus machine labor.",
+    subThemes: "Category 5: AI adoption & workflow transformation",
+    directional: "",
+    probes: [],
+  }),
+  q(18, "ai-adoption", "At which stages of your workflow do AI tools now play the biggest role, and are there stages where you intentionally avoid using them?", {
+    intention: "Understand how AI tools have changed development behavior, workflow architecture, and the distribution of human versus machine labor.",
+    subThemes: "Category 5: AI adoption & workflow transformation",
+    directional: "",
+    probes: [],
+  }),
+  q(19, "ai-tooling", "What AI tools currently form part of your regular workflow, and what specific role does each tool play across research, design, development, debugging, writing, or decision-making?", {
+    intention: "Map how builders structure AI tool ecosystems, assign different models to different tasks, and manage multi-model workflows.",
+    subThemes: "Category 6: AI tooling & model orchestration",
+    directional: "",
+    probes: [],
+  }),
+  q(20, "ai-tooling", "Do different AI models serve different purposes in your workflow, or have you largely consolidated around a single model or environment for most tasks?", {
+    intention: "Map how builders structure AI tool ecosystems, assign different models to different tasks, and manage multi-model workflows.",
+    subThemes: "Category 6: AI tooling & model orchestration",
+    directional: "",
+    probes: [],
+  }),
+  q(21, "ai-tooling", "Which specific tools, references, or environments do you rely on at different stages of your workflow, and would you describe your stack as tightly optimized or broadly experimental?", {
+    intention: "Map how builders structure AI tool ecosystems, assign different models to different tasks, and manage multi-model workflows.",
+    subThemes: "Category 6: AI tooling & model orchestration",
+    directional: "",
+    probes: [],
+  }),
+  q(22, "ai-trust", "How deeply do you typically understand AI-generated code or design output before using it, and what level of review, testing, or verification feels necessary to you?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes",
+    directional: "",
+    probes: [],
+  }),
+  q(23, "ai-trust", "Have you encountered situations where AI produced outputs that were confidently wrong, misleading, or incomplete, and what impact did those failures have on your workflow or trust?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes",
+    directional: "",
+    probes: [],
+  }),
+  q(24, "ai-trust", "Do you usually cross-check AI outputs against other models, documentation, community sources, or human expertise, and what typically triggers that extra verification step?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes",
+    directional: "",
+    probes: [],
+  }),
+  q(25, "ai-trust", "Where do current AI systems fail most noticeably in your workflow, particularly when working on Bitcoin-related products or complex technical systems?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes",
+    directional: "",
+    probes: [],
+  }),
+  q(26, "ai-trust", "Do you feel that AI tools genuinely understand UX, emotional nuance, user trust, and human behavior effectively, or do you find yourself repeatedly compensating for gaps in those areas?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes",
+    directional: "",
+    probes: [],
+  }),
+  q(27, "ai-trust", "Are there AI tools you wish performed substantially better, and when they fall short, do you think the limitation comes primarily from the model itself or from the way humans currently interact with it?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes",
+    directional: "",
+    probes: [],
+  }),
+  q(28, "context-engineering", "How much context do you typically need to provide AI systems in order to get useful outputs within a complex Bitcoin project, and how do you manage that overhead?", {
+    intention: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows.",
+    subThemes: "Category 8: Context engineering & agent-ready workflows",
+    directional: "",
+    probes: [],
+  }),
+  q(29, "context-engineering", "Do you find AI more effective when starting projects from scratch compared to working within existing systems or mature codebases, and why?", {
+    intention: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows.",
+    subThemes: "Category 8: Context engineering & agent-ready workflows",
+    directional: "",
+    probes: [],
+  }),
+  q(30, "context-engineering", "Would reusable Bitcoin-specific context files, prompt libraries, or structured AI guidance systems meaningfully improve your workflow, and what would you want those systems to cover first?", {
+    intention: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows.",
+    subThemes: "Category 8: Context engineering & agent-ready workflows",
+    directional: "",
+    probes: [],
+  }),
+  q(31, "context-engineering", "If Bitcoin design guidance were embedded directly into your AI tools through context files, IDE integrations, system prompts, or agent workflows, do you think that would meaningfully change the way you make product or UX decisions?", {
+    intention: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows.",
+    subThemes: "Category 8: Context engineering & agent-ready workflows",
+    directional: "",
+    probes: [],
+  }),
+  q(32, "bitcoin-ux-gaps", "Which aspects of building Bitcoin products currently feel genuinely under-documented, and what information or guidance did you wish existed when you needed it?", {
+    intention: "Identify missing knowledge infrastructure, under-documented UX problems, and ecosystem-wide documentation weaknesses.",
+    subThemes: "Category 9: Bitcoin UX knowledge & documentation gaps",
+    directional: "",
+    probes: [],
+  }),
+  q(33, "bitcoin-ux-gaps", "What kinds of learning resources genuinely help you while building products, and what characteristics make you choose one resource over another?", {
+    intention: "Identify missing knowledge infrastructure, under-documented UX problems, and ecosystem-wide documentation weaknesses.",
+    subThemes: "Category 9: Bitcoin UX knowledge & documentation gaps",
+    directional: "",
+    probes: [],
+  }),
+  q(34, "trust-authority", "What makes a resource feel trustworthy enough to act on, and what signals typically increase or reduce your confidence in documentation, guidance, or educational material?", {
+    intention: "Understand how builders decide what information is trustworthy, current, and actionable in a rapidly evolving ecosystem.",
+    subThemes: "Category 10: Trust, authority & knowledge validation",
+    directional: "",
+    probes: [],
+  }),
+  q(35, "trust-authority", "How do you currently stay updated on Bitcoin protocol developments, UX standards, design patterns, and ecosystem changes, and where does that system tend to fail or break down?", {
+    intention: "Understand how builders decide what information is trustworthy, current, and actionable in a rapidly evolving ecosystem.",
+    subThemes: "Category 10: Trust, authority & knowledge validation",
+    directional: "",
+    probes: [],
+  }),
+  q(36, "future-bitcoin-design", "How do you think Bitcoin design resources need to evolve structurally for the AI era, beyond simply adding more content or examples?", {
+    intention: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments.",
+    subThemes: "Category 11: Future of Bitcoin.Design in the AI era",
+    directional: "",
+    probes: [],
+  }),
+  q(37, "future-bitcoin-design", "If you could give the Bitcoin Design Guide one major directive about what it should prioritize over the next few years, what would that directive be and why?", {
+    intention: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments.",
+    subThemes: "Category 11: Future of Bitcoin.Design in the AI era",
+    directional: "",
+    probes: [],
+  }),
+  q(38, "future-bitcoin-design", "Have you used the Bitcoin Design Guide before, and if so, how does it currently fit into your workflow and decision-making process?", {
+    intention: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments.",
+    subThemes: "Category 11: Future of Bitcoin.Design in the AI era",
+    directional: "",
+    probes: [],
+  }),
+  q(39, "future-bitcoin-design", "What would success look like for an AI-optimized and agent-ready Bitcoin Design Guide, and what would be concretely different about your day-to-day work if it succeeded?", {
+    intention: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments.",
+    subThemes: "Category 11: Future of Bitcoin.Design in the AI era",
+    directional: "",
+    probes: [],
+  }),
+  q(40, "future-bitcoin-design", "What would make you actively recommend the Bitcoin Design Guide to another builder, and what is currently preventing you from recommending it more strongly today?", {
+    intention: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments.",
+    subThemes: "Category 11: Future of Bitcoin.Design in the AI era",
+    directional: "",
+    probes: [],
+  }),
+  q(41, "ai-adoption", "In practice, how do you actually write code day to day? For example, do you mostly vibe code with AI agents, write code yourself line by line, rely on autocomplete or copilot style tools, or use some combination, and what does that split look like for you?", {
+    intention: "Understand how AI tools have changed development behavior, workflow architecture, and the distribution of human versus machine labor.",
+    subThemes: "Category 5: AI adoption & workflow transformation · Builder coding awareness",
+    directional: "Surfaces whether the participant is primarily prompting AI to generate code, actively authoring and reviewing code, or using lighter assistive tooling. Reveals depth of technical ownership versus delegated generation.",
+    probes: [
+      "When AI generates most of a feature, do you still read and understand the code before shipping?",
+      "Is there a difference in how you work on Bitcoin-specific code versus general product code?",
+      "Have you ever shipped something where you could not explain how part of the code worked?",
+    ],
+  }),
+  q(42, "builder-identity", "How comfortable are you with technical setup tasks such as importing files and resources, cloning repositories, installing dependencies, and getting a new codebase running locally? Where does that process feel smooth for you, and where does it usually break down?", {
+    intention: "Understand who the participant is as a builder, what kinds of systems they work on, and the context in which their workflows and AI usage patterns exist.",
+    subThemes: "Category 1: Builder identity & product context · Technical setup and codebase literacy",
+    directional: "Reveals baseline technical fluency that shapes how much AI-assisted workflow guidance needs to assume about environment setup, repo onboarding, and hands-on development capability.",
+    probes: [
+      "Do you typically clone and run projects yourself, or does someone else handle setup for you?",
+      "When setup fails, do you debug it yourself, search documentation, ask AI, or ask a teammate?",
+      "Has difficulty setting up a codebase ever stopped you from evaluating a tool, library, or design resource?",
+    ],
+  }),
+  q(43, "ai-tooling", "Do you use multiple AI systems or models together within the same workflow, and if so, how do you decide which system to trust for different kinds of tasks such as coding, reasoning, research, UX thinking, or debugging?", {
+    intention: "Map how builders structure AI tool ecosystems, assign different models to different tasks, and manage multi-model workflows.",
+    subThemes: "Category 6: AI tooling & model orchestration · Multi-model orchestration behavior",
+    directional: "Reveals trust calibration across task types and whether participants maintain a deliberate orchestration strategy versus opportunistic tool switching.",
+    probes: [
+      "Is there one model you trust most by default, or does that change by task type?",
+      "Do you ever use one AI system to review output from another?",
+      "Has multi-model workflow ever created inconsistency or extra overhead for you?",
+    ],
+  }),
+  q(44, "builder-identity", "Has AI changed what kinds of products or technical challenges you personally feel capable of building compared to a few years ago, and if so, how?", {
+    intention: "Understand who the participant is as a builder, what kinds of systems they work on, and the context in which their workflows and AI usage patterns exist.",
+    subThemes: "Category 1: Builder identity & product context · Builder identity transformation",
+    directional: "Surfaces expansion or distortion of builder self-concept under AI assistance, including whether capability gains feel authentic or borrowed.",
+    probes: [
+      "Are there product types you attempt now that you would not have attempted before AI tools?",
+      "Do you feel your expanded capability is real skill growth, tool leverage, or both?",
+      "Has AI changed which kinds of Bitcoin products you feel qualified to build?",
+    ],
+  }),
+  q(45, "ai-adoption", "Has AI changed the speed at which you move from idea to implementation, and has that affected the number, ambition, or quality of projects you pursue?", {
+    intention: "Understand how AI tools have changed development behavior, workflow architecture, and the distribution of human versus machine labor.",
+    subThemes: "Category 5: AI adoption & workflow transformation · AI-driven workflow acceleration",
+    directional: "Explores whether faster execution leads to more experiments, higher ambition, or lower quality bar, especially in high-stakes Bitcoin contexts.",
+    probes: [
+      "Are you shipping more ideas because AI lowers the cost of starting, or finishing fewer because quality review takes longer?",
+      "Has faster implementation changed how you evaluate whether an idea is worth pursuing?",
+      "Do you think speed gains from AI improve or risk Bitcoin product quality?",
+    ],
+  }),
+  q(46, "context-engineering", "Do you think design guidance, technical documentation, or educational resources now need to be structured differently because AI systems increasingly consume and interpret them alongside humans?", {
+    intention: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows.",
+    subThemes: "Category 8: Context engineering & agent-ready workflows · Machine-readable documentation",
+    directional: "Surfaces demand for dual-audience documentation structures versus confidence that human-readable prose remains sufficient.",
+    probes: [
+      "What would you change first if rewriting docs for both humans and AI agents?",
+      "Have you seen AI misinterpret documentation that seemed clear to you?",
+      "Should Bitcoin design guidance prioritize human readers, AI systems, or both equally?",
+    ],
+  }),
+  q(47, "context-engineering", "What characteristics make documentation, design systems, or reference material especially useful inside AI-assisted or agent-driven workflows?", {
+    intention: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows.",
+    subThemes: "Category 8: Context engineering & agent-ready workflows · Characteristics of agent-ready content",
+    directional: "Identifies concrete content attributes (structure, examples, constraints, versioning) that improve AI retrieval and application quality.",
+    probes: [
+      "Do examples, schemas, or explicit constraints matter more than narrative explanation for AI use?",
+      "What makes you trust a resource when feeding it into an AI session?",
+      "What would an agent-ready Bitcoin design resource need to include to be immediately useful?",
+    ],
+  }),
+  q(48, "ai-trust", "How important is it for you to understand how an AI system arrived at a recommendation, architectural decision, or generated output before you trust or adopt it?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes · Transparency and explainability",
+    directional: "Reveals explainability requirements and whether opaque but useful outputs are acceptable in Bitcoin development contexts.",
+    probes: [
+      "Is a correct outcome enough, or do you need to understand the reasoning path?",
+      "Are there Bitcoin-specific decisions where explainability is non-negotiable for you?",
+      "Have you adopted AI recommendations you later regretted because the reasoning was unclear?",
+    ],
+  }),
+  q(49, "ai-adoption", "Has AI changed the way teams coordinate responsibilities, communicate decisions, or divide work during product development, and if so, what changes feel most significant?", {
+    intention: "Understand how AI tools have changed development behavior, workflow architecture, and the distribution of human versus machine labor.",
+    subThemes: "Category 5: AI adoption & workflow transformation · Team coordination in AI-native workflows",
+    directional: "Explores organizational effects of AI beyond individual productivity, including role blur, async handoffs, and shared AI context.",
+    probes: [
+      "Does AI reduce or increase the need for explicit team communication about decisions?",
+      "Have roles on your team shifted because AI covers tasks that used to be specialized?",
+      "Do teams share prompts, context files, or AI outputs as part of coordination?",
+    ],
+  }),
+  q(50, "ai-trust", "Do you feel AI tools are strengthening your technical understanding over time, or creating areas where your own depth of understanding is becoming weaker or more dependent on the tools?", {
+    intention: "Investigate how builders evaluate AI reliability, detect hallucinations, verify outputs, and navigate trust in AI-assisted development.",
+    subThemes: "Category 7: AI trust, verification & failure modes · Skill development vs dependency",
+    directional: "Surfaces long-term learning effects versus skill atrophy, critical for assessing builder readiness in trust-sensitive Bitcoin domains.",
+    probes: [
+      "Are there skills you feel you are learning faster because of AI, and skills you worry you are losing?",
+      "Do you deliberately practice without AI for certain tasks?",
+      "Does dependency concern you more for general product work or Bitcoin-specific work?",
+    ],
+  }),
+  q(51, "future-bitcoin-design", "Do you see any philosophical or practical tensions between Bitcoin's trust-minimized ethos and increasing reliance on AI systems within development workflows?", {
+    intention: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments.",
+    subThemes: "Category 11: Future of Bitcoin.Design in the AI era · Bitcoin philosophy vs AI reliance",
+    directional: "Surfaces ideological and practical friction between sovereignty values and AI-mediated building, informing how Bitcoin.Design frames AI guidance.",
+    probes: [
+      "Where does AI assistance feel aligned with Bitcoin values, and where does it feel misaligned?",
+      "Would you trust AI-generated guidance for custody, security, or key management decisions?",
+      "Should Bitcoin design resources explicitly address these tensions rather than treat AI as neutral tooling?",
+    ],
+  }),
+  q(52, "future-bitcoin-design", "Do you think AI is fundamentally changing what good UX means in Bitcoin products, beyond simply making workflows faster or more efficient? If so, what feels different?", {
+    intention: "Explore how Bitcoin.Design should evolve structurally and strategically for AI-assisted and agent-mediated development environments.",
+    subThemes: "Category 11: Future of Bitcoin.Design in the AI era · AI-era UX philosophy",
+    directional: "Explores whether AI shifts UX standards (trust signaling, clarity, error prevention) rather than only accelerating existing patterns.",
+    probes: [
+      "Are AI-generated interfaces meeting the emotional and trust needs of Bitcoin users, or mostly functional needs?",
+      "What does good Bitcoin UX require that AI tools still struggle to internalize?",
+      "Should Bitcoin.Design define UX principles that explicitly account for AI-generated product surfaces?",
+    ],
+  }),
+  q(53, "context-engineering", "Do you use skill files in your AI-assisted workflow, such as structured skill documents, agent instruction files, or reusable system prompt files, and if so, how do you create, maintain, and rely on them?", {
+    intention: "Study how builders manage AI context, reusable prompts, structured knowledge systems, and AI-native workflows.",
+    subThemes: "Category 8: Context engineering & agent-ready workflows · Skill files and reusable agent instructions",
+    directional: "Reveals adoption of skill-file patterns versus ad hoc prompting, and whether builders treat skills as personal tooling, team infrastructure, or something they expect from shared resources like Bitcoin.Design.",
+    probes: [
+      "Have you created your own skill files, or do you mainly use ones shared by a tool, team, or community?",
+      "What kinds of tasks do skill files help with most in your workflow?",
+      "Would Bitcoin-specific skill files be useful to you, and what should they cover first?",
+    ],
+  }),
+];

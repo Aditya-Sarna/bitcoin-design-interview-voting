@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: bitcoin-design-interview-voting
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/meta
+    envVars:
+      - key: NODE_VERSION
+        value: "22"

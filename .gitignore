@@ -1,0 +1,4 @@
+node_modules/
+voting.db
+.env
+.DS_Store

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <title>Bitcoin Design — Interview Question Voting</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --orange: #f7931a;
+      --orange-dark: #e07a00;
+      --orange-soft: #fff7ed;
+      --bg: #f4f4f5;
+      --surface: #fff;
+      --text: #18181b;
+      --text-2: #52525b;
+      --text-3: #71717a;
+      --line: #e4e4e7;
+      --radius: 12px;
+      --radius-sm: 8px;
+      --font: "Inter", system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: var(--font); background: var(--bg); color: var(--text-2); line-height: 1.5; }
+
+    .app { max-width: 900px; margin: 0 auto; padding: 24px 20px 64px; }
+
+    header { margin-bottom: 24px; }
+    .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .mark {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--orange); color: #fff;
+      display: grid; place-items: center; font-weight: 700;
+    }
+    h1 { font-size: 1.35rem; font-weight: 700; color: var(--text); letter-spacing: -.02em; }
+    .sub { font-size: 14px; color: var(--text-3); }
+
+    .tabs {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      font: inherit; font-size: 13px; font-weight: 500;
+      padding: 10px 16px; border-radius: var(--radius-sm);
+      border: 1px solid var(--line); background: var(--surface);
+      cursor: pointer; color: var(--text-2);
+    }
+    .tab.active { background: var(--orange-soft); border-color: var(--orange); color: var(--text); }
+    .tab:hover:not(.active) { border-color: #d4d4d8; }
+
+    .quota {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 16px; background: var(--orange-soft);
+      border: 1px solid #fed7aa; border-radius: var(--radius);
+      margin-bottom: 20px;
+    }
+    .quota-text { flex: 1; font-size: 13px; color: #78350f; }
+    .dots { display: flex; gap: 6px; }
+    .dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid var(--orange);
+    }
+    .dot.used { background: var(--orange); }
+    .quota-num { font-size: 22px; font-weight: 700; color: var(--orange); }
+
+    .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+
+    .chip {
+      font: inherit; font-size: 12px; font-weight: 500;
+      padding: 6px 12px; border-radius: 99px;
+      border: 1px solid var(--line); background: var(--surface);
+      cursor: pointer;
+    }
+    .chip.active { background: var(--text); border-color: var(--text); color: #fff; }
+
+    .cat-heading {
+      font-size: 11px; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase; margin: 24px 0 10px;
+      padding-bottom: 6px; border-bottom: 2px solid var(--line);
+    }
+
+    .q-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .q-card.top { border-color: var(--orange); border-width: 2px; }
+    .q-card.voted { background: #fffcf8; }
+
+    .q-main {
+      display: flex; gap: 14px; padding: 14px 16px; align-items: flex-start;
+    }
+
+    .vote-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex-shrink: 0; }
+
+    .vote-btn {
+      width: 42px; height: 42px; border-radius: var(--radius-sm);
+      border: 1px solid var(--line); background: var(--bg);
+      cursor: pointer; font-size: 16px; color: var(--text-3);
+      transition: all .15s;
+    }
+    .vote-btn:hover:not(:disabled) { border-color: var(--orange); color: var(--orange); background: var(--orange-soft); }
+    .vote-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .vote-btn.on { background: var(--orange); border-color: var(--orange-dark); color: #fff; }
+
+    .vote-n { font-size: 13px; font-weight: 600; color: var(--text); }
+
+    .q-body { flex: 1; min-width: 0; }
+
+    .q-head { display: flex; align-wrap: wrap; gap: 8px; align-items: flex-start; margin-bottom: 6px; }
+    .q-num { font-size: 12px; font-weight: 700; color: var(--orange); flex-shrink: 0; }
+    .q-text { font-size: 15px; font-weight: 500; color: var(--text); line-height: 1.45; flex: 1; }
+
+    .q-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+    .tag {
+      font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 99px;
+    }
+    .tag-proposed { background: #ede9fe; color: #5b21b6; }
+    .tag-top { background: var(--orange-soft); color: #9a3412; }
+
+    .ctx-toggle {
+      font: inherit; font-size: 12px; font-weight: 500;
+      padding: 6px 12px; margin-top: 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--line); background: var(--bg);
+      cursor: pointer; color: var(--text-2);
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .ctx-toggle:hover { border-color: #d4d4d8; }
+    .ctx-toggle.open { background: var(--text); color: #fff; border-color: var(--text); }
+
+    .ctx-panel {
+      display: none;
+      padding: 0 16px 16px 72px;
+      border-top: 1px solid var(--line);
+      background: #fafafa;
+    }
+    .ctx-panel.open { display: block; padding-top: 14px; }
+
+    .ctx-block { margin-bottom: 14px; }
+    .ctx-label {
+      font-size: 10px; font-weight: 700; letter-spacing: .05em;
+      text-transform: uppercase; color: var(--text-3); margin-bottom: 4px;
+    }
+    .ctx-body { font-size: 13px; color: var(--text-2); line-height: 1.55; }
+    .ctx-probes { margin: 6px 0 0 1rem; font-size: 13px; color: var(--text-2); }
+    .ctx-probes li { margin-bottom: 4px; }
+
+    .comment-zone {
+      padding: 12px 16px 14px 72px;
+      border-top: 1px solid var(--line);
+      background: #fefefe;
+    }
+    .comment-zone.hidden { display: none; }
+
+    .comment-form { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    .comment-form input, .comment-form textarea {
+      font: inherit; font-size: 13px; padding: 8px 10px;
+      border: 1px solid var(--line); border-radius: var(--radius-sm);
+    }
+    .comment-form textarea { min-height: 64px; resize: vertical; }
+
+    .comment-list { display: flex; flex-direction: column; gap: 8px; }
+    .comment {
+      padding: 10px 12px; background: var(--bg);
+      border-radius: var(--radius-sm); font-size: 13px;
+    }
+    .comment-meta { font-size: 11px; color: var(--text-3); margin-bottom: 4px; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .stats {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 10px; margin-bottom: 24px;
+    }
+    .stat {
+      background: var(--surface); border: 1px solid var(--line);
+      border-radius: var(--radius); padding: 14px;
+    }
+    .stat-v { font-size: 1.5rem; font-weight: 700; color: var(--text); }
+    .stat-l { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+    .dash-item {
+      display: flex; gap: 12px; align-items: flex-start;
+      padding: 12px 14px; background: var(--surface);
+      border: 1px solid var(--line); border-radius: var(--radius-sm);
+      margin-bottom: 8px;
+    }
+    .dash-rank {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--bg); display: grid; place-items: center;
+      font-size: 12px; font-weight: 700; flex-shrink: 0;
+    }
+    .dash-item:nth-child(1) .dash-rank { background: var(--orange); color: #fff; }
+    .dash-item:nth-child(2) .dash-rank { background: #fef3c7; color: #92400e; }
+    .dash-item:nth-child(3) .dash-rank { background: #f4f4f5; }
+
+    .propose {
+      margin-top: 32px; padding: 20px;
+      background: var(--surface); border: 1px dashed var(--line);
+      border-radius: var(--radius);
+    }
+    .propose h3 { font-size: 15px; margin-bottom: 12px; color: var(--text); }
+    .propose textarea {
+      width: 100%; font: inherit; font-size: 14px;
+      padding: 12px; border: 1px solid var(--line);
+      border-radius: var(--radius-sm); min-height: 80px; margin-bottom: 10px;
+    }
+    .propose-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+    .propose select {
+      font: inherit; font-size: 13px; padding: 10px 12px;
+      border: 1px solid var(--line); border-radius: var(--radius-sm); flex: 1;
+    }
+
+    .btn {
+      font: inherit; font-size: 13px; font-weight: 500;
+      padding: 9px 14px; border-radius: var(--radius-sm);
+      border: 1px solid var(--line); background: var(--surface);
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--orange); border-color: var(--orange-dark); color: #fff; }
+    .btn-sm { padding: 6px 10px; font-size: 12px; }
+    .btn-danger { color: #b91c1c; border-color: #fecaca; background: #fef2f2; }
+    .btn-danger:hover { background: #fee2e2; border-color: #fca5a5; }
+
+    .toast {
+      position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: var(--text); color: #fff; padding: 10px 18px;
+      border-radius: 99px; font-size: 13px; opacity: 0;
+      pointer-events: none; transition: opacity .2s; z-index: 100;
+    }
+    .toast.show { opacity: 1; }
+
+    .loading { text-align: center; padding: 40px; color: var(--text-3); }
+
+    @media (max-width: 640px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .ctx-panel, .comment-zone { padding-left: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="mark">₿</div>
+        <div>
+          <h1>Interview Question Voting</h1>
+          <p class="sub" id="subline">AI-Age Refresh of Bitcoin.Design · Loading…</p>
+          <p class="sub" id="urlHint" style="margin-top:4px;font-size:12px;color:#b45309;display:none">Use <strong>http://localhost:3847</strong> — not the old HTML file in your folder.</p>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button type="button" class="tab active" data-view="vote">Vote</button>
+      <button type="button" class="tab" data-view="dashboard">Dashboard</button>
+      <button type="button" class="tab" data-view="propose">Propose</button>
+    </nav>
+
+    <div id="panel-vote" class="panel active">
+      <div class="quota">
+        <div class="quota-text" id="quotaText">Cast up to <strong>10 votes</strong> on questions you want in the interview guide. Anyone can leave comments on any question.</div>
+        <div class="dots" id="voteDots"></div>
+        <div class="quota-num" id="votesLeft">10</div>
+      </div>
+
+      <div class="filters" id="categoryFilters"></div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap">
+        <label style="font-size:13px;color:var(--text-3)">Your name for comments</label>
+        <input type="text" id="authorName" placeholder="Optional" maxlength="40"
+          style="flex:1;min-width:160px;font:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:8px" />
+      </div>
+      <div id="questionList"><div class="loading">Loading questions…</div></div>
+    </div>
+
+    <div id="panel-dashboard" class="panel">
+      <div class="stats" id="dashStats"></div>
+      <h2 style="font-size:14px;font-weight:600;color:var(--text);margin-bottom:12px">Top voted questions</h2>
+      <div id="dashTop"></div>
+    </div>
+
+    <div id="panel-propose" class="panel">
+      <div class="propose">
+        <h3>Propose a research question</h3>
+        <p style="font-size:13px;margin-bottom:12px;color:var(--text-3)">Proposals are added to the top of the vote list automatically. Choose a category heading.</p>
+        <textarea id="propText" placeholder="Your proposed interview question…" maxlength="300"></textarea>
+        <div class="propose-row">
+          <select id="propCategory"></select>
+          <input type="text" id="propAuthor" placeholder="Your name (optional)" maxlength="40" style="flex:1;font:inherit;font-size:13px;padding:10px 12px;border:1px solid var(--line);border-radius:8px" />
+        </div>
+        <button type="button" class="btn btn-primary" id="propSubmit">Submit proposal</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const API = "";
+    const voterId = localStorage.getItem("bd-voter-id") || (() => {
+      const id = "v-" + crypto.randomUUID();
+      localStorage.setItem("bd-voter-id", id);
+      return id;
+    })();
+
+    function getAuthorName() {
+      return document.getElementById("authorName")?.value?.trim() || localStorage.getItem("bd-author-name") || "";
+    }
+
+    function saveAuthorName(name) {
+      localStorage.setItem("bd-author-name", name);
+    }
+
+    let meta = { categories: [], maxVotes: 10 };
+    let questions = [];
+    let activeCategory = "all";
+    let openContext = new Set();
+    let openComments = new Set();
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2500);
+    }
+
+    async function api(path, opts = {}) {
+      const res = await fetch(API + path, {
+        headers: { "Content-Type": "application/json", ...opts.headers },
+        ...opts,
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || res.statusText);
+      return data;
+    }
+
+    function catStyle(id) {
+      return meta.categories.find((c) => c.id === id) || { label: id, short: "", color: "#f4f4f5", text: "#52525b" };
+    }
+
+    function renderDots(remaining) {
+      const used = meta.maxVotes - remaining;
+      document.getElementById("voteDots").innerHTML = Array.from({ length: meta.maxVotes }, (_, i) =>
+        `<span class="dot${i < used ? " used" : ""}"></span>`
+      ).join("");
+      document.getElementById("votesLeft").textContent = remaining;
+    }
+
+    function renderFilters() {
+      const el = document.getElementById("categoryFilters");
+      el.innerHTML = `<button type="button" class="chip${activeCategory === "all" ? " active" : ""}" data-cat="all">All</button>` +
+        meta.categories.map((c) =>
+          `<button type="button" class="chip${activeCategory === c.id ? " active" : ""}" data-cat="${c.id}">${c.short ? c.short + ": " : ""}${c.label}</button>`
+        ).join("");
+      el.querySelectorAll(".chip").forEach((btn) => {
+        btn.onclick = () => { activeCategory = btn.dataset.cat; loadQuestions(); };
+      });
+    }
+
+    function renderQuestionCard(q, idx) {
+      const cat = catStyle(q.category);
+      const isTop = idx === 0 && q.voteCount > 0;
+      const ctxOpen = openContext.has(q.id);
+      const comOpen = openComments.has(q.id);
+
+      return `
+        <article class="q-card${isTop ? " top" : ""}${q.userVoted ? " voted" : ""}" data-id="${q.id}">
+          <div class="q-main">
+            <div class="vote-col">
+              <button type="button" class="vote-btn${q.userVoted ? " on" : ""}" data-vote="${q.id}" aria-label="${q.userVoted ? "Remove vote" : "Vote"}">▲</button>
+              <span class="vote-n">${q.voteCount}</span>
+            </div>
+            <div class="q-body">
+              <div class="q-head">
+                <span class="q-num">Q${q.num}</span>
+                <p class="q-text">${esc(q.text)}</p>
+              </div>
+              <div class="q-meta">
+                <span class="tag" style="background:${cat.color};color:${cat.text}">${cat.label}</span>
+                ${q.proposed ? '<span class="tag tag-proposed">Community proposal</span>' : ""}
+                ${isTop ? '<span class="tag tag-top">Top voted</span>' : ""}
+                ${q.commentCount ? `<span class="tag" style="background:#f4f4f5;color:#52525b">${q.commentCount} comment${q.commentCount !== 1 ? "s" : ""}</span>` : ""}
+              </div>
+              <button type="button" class="ctx-toggle${ctxOpen ? " open" : ""}" data-ctx="${q.id}">
+                ${ctxOpen ? "Hide" : "Show"} research context
+              </button>
+              <button type="button" class="ctx-toggle${comOpen ? " open" : ""}" data-com="${q.id}" style="margin-left:6px">
+                ${comOpen ? "Hide" : "Show"} comments${q.commentCount ? ` (${q.commentCount})` : ""}
+              </button>
+              ${q.canDelete !== false ? `<button type="button" class="btn btn-sm btn-danger" data-delete="${q.id}" style="margin-left:6px">Delete question</button>` : ""}
+            </div>
+          </div>
+          <div class="ctx-panel${ctxOpen ? " open" : ""}" id="ctx-${q.id}">
+            ${q.intention ? `<div class="ctx-block"><div class="ctx-label">Research objective</div><div class="ctx-body">${esc(q.intention)}</div></div>` : ""}
+            ${q.subThemes ? `<div class="ctx-block"><div class="ctx-label">Category</div><div class="ctx-body">${esc(q.subThemes)}</div></div>` : ""}
+            ${q.directional ? `<div class="ctx-block"><div class="ctx-label">Possible directional changes</div><div class="ctx-body">${esc(q.directional)}</div></div>` : ""}
+            ${q.probes?.length ? `<div class="ctx-block"><div class="ctx-label">Interviewer examples and probes</div><ul class="ctx-probes">${q.probes.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div>` : ""}
+          </div>
+          <div class="comment-zone${comOpen ? "" : " hidden"}" id="com-${q.id}">
+            <div class="comment-form">
+              <textarea placeholder="Add a comment…" data-comment-body="${q.id}" maxlength="500"></textarea>
+              <button type="button" class="btn btn-sm btn-primary" data-comment-submit="${q.id}">Post comment</button>
+            </div>
+            <div class="comment-list" id="comments-${q.id}">${q.commentCount ? "" : '<p style="font-size:12px;color:var(--text-3)">No comments yet.</p>'}</div>
+          </div>
+        </article>`;
+    }
+
+    function esc(s) {
+      const d = document.createElement("div");
+      d.textContent = s || "";
+      return d.innerHTML;
+    }
+
+    function groupByCategory(list) {
+      const order = meta.categories.map((c) => c.id);
+      const groups = {};
+      order.forEach((id) => { groups[id] = []; });
+      list.forEach((q) => {
+        if (groups[q.category]) groups[q.category].push(q);
+        else groups[q.category] = [q];
+      });
+      return order.map((id) => ({
+        id,
+        items: (groups[id] || []).sort((a, b) => a.num - b.num),
+      })).filter((g) => g.items.length);
+    }
+
+    async function loadQuestions() {
+      renderFilters();
+      const list = await api(`/api/questions?voterId=${encodeURIComponent(voterId)}&category=${activeCategory}`);
+      questions = list;
+
+      document.getElementById("subline").textContent =
+        `AI-Age Refresh of Bitcoin.Design · ${list.length} questions · ${meta.categories.length} categories · live from server`;
+
+      const me = await api(`/api/votes/me?voterId=${encodeURIComponent(voterId)}`);
+      renderDots(me.votesRemaining);
+
+      const el = document.getElementById("questionList");
+      if (!list.length) {
+        el.innerHTML = '<div class="loading">No questions in this category.</div>';
+        return;
+      }
+
+      const proposed = list.filter((q) => q.proposed);
+      const canonical = list.filter((q) => !q.proposed);
+
+      if (activeCategory === "all") {
+        const groups = groupByCategory(canonical);
+        let html = "";
+        if (proposed.length) {
+          html += `<div class="cat-heading" style="color:#5b21b6;border-color:#c4b5fd">Community proposals</div>`;
+          html += proposed.map((q, i) => renderQuestionCard(q, i)).join("");
+        }
+        html += groups.map((g, gi) => {
+          const cat = catStyle(g.id);
+          const heading = cat.short ? `${cat.short}: ${cat.label}` : cat.label;
+          const offset = proposed.length + groups.slice(0, gi).reduce((n, gr) => n + gr.items.length, 0);
+          return `<div class="cat-heading" style="color:${cat.text};border-color:${cat.color}">${esc(heading)}</div>` +
+            g.items.map((q, i) => renderQuestionCard(q, offset + i)).join("");
+        }).join("");
+        el.innerHTML = html;
+      } else {
+        el.innerHTML = list.map((q, i) => renderQuestionCard(q, i)).join("");
+      }
+
+      bindQuestionEvents();
+    }
+
+    function bindQuestionEvents() {
+      document.querySelectorAll("[data-vote]").forEach((btn) => {
+        btn.onclick = async () => {
+          const id = btn.dataset.vote;
+          const q = questions.find((x) => x.id === id);
+          try {
+            if (q.userVoted) {
+              await api("/api/votes", { method: "DELETE", body: JSON.stringify({ questionId: id, voterId }) });
+              toast("Vote removed");
+            } else {
+              await api("/api/votes", { method: "POST", body: JSON.stringify({ questionId: id, voterId }) });
+              toast("Vote recorded");
+            }
+            await loadQuestions();
+          } catch (e) {
+            toast(e.message);
+          }
+        };
+      });
+
+      document.querySelectorAll("[data-ctx]").forEach((btn) => {
+        btn.onclick = () => {
+          const id = btn.dataset.ctx;
+          if (openContext.has(id)) openContext.delete(id);
+          else openContext.add(id);
+          loadQuestions();
+        };
+      });
+
+      document.querySelectorAll("[data-com]").forEach((btn) => {
+        btn.onclick = async () => {
+          const id = btn.dataset.com;
+          if (openComments.has(id)) openComments.delete(id);
+          else { openComments.add(id); await loadComments(id); }
+          loadQuestions();
+        };
+      });
+
+      document.querySelectorAll("[data-comment-submit]").forEach((btn) => {
+        btn.onclick = async () => {
+          const id = btn.dataset.commentSubmit;
+          const ta = document.querySelector(`[data-comment-body="${id}"]`);
+          const body = ta?.value?.trim();
+          if (!body) return toast("Write a comment first");
+          try {
+            await api("/api/comments", {
+              method: "POST",
+              body: JSON.stringify({ questionId: id, voterId, body, authorLabel: getAuthorName() }),
+            });
+            ta.value = "";
+            toast("Comment posted");
+            await loadComments(id);
+            await loadQuestions();
+          } catch (e) {
+            toast(e.message);
+          }
+        };
+      });
+
+      document.querySelectorAll("[data-delete]").forEach((btn) => {
+        btn.onclick = async () => {
+          const id = btn.dataset.delete;
+          const q = questions.find((x) => x.id === id);
+          if (!q) return;
+          const label = q.text.length > 80 ? q.text.slice(0, 80) + "…" : q.text;
+          if (!confirm(`Delete this question?\n\n"${label}"\n\nThis also removes its votes and comments.`)) return;
+          try {
+            await api(`/api/questions/${id}`, { method: "DELETE", body: JSON.stringify({ voterId }) });
+            openContext.delete(id);
+            openComments.delete(id);
+            toast("Question deleted");
+            await loadQuestions();
+          } catch (e) {
+            toast(e.message);
+          }
+        };
+      });
+    }
+
+    async function loadComments(questionId) {
+      const list = await api(`/api/comments/${questionId}`);
+      const el = document.getElementById(`comments-${questionId}`);
+      if (!el) return;
+      el.innerHTML = list.length
+        ? list.map((c) => `<div class="comment"><div class="comment-meta">${esc(c.authorLabel)} · ${new Date(c.createdAt).toLocaleDateString()}</div>${esc(c.body)}</div>`).join("")
+        : '<p style="font-size:12px;color:var(--text-3)">No comments yet.</p>';
+    }
+
+    async function loadDashboard() {
+      const dash = await api("/api/dashboard");
+      document.getElementById("dashStats").innerHTML = `
+        <div class="stat"><div class="stat-v">${dash.totals.votes}</div><div class="stat-l">Total votes</div></div>
+        <div class="stat"><div class="stat-v">${dash.totals.voters}</div><div class="stat-l">Voters</div></div>
+        <div class="stat"><div class="stat-v">${dash.totals.comments}</div><div class="stat-l">Comments</div></div>
+        <div class="stat"><div class="stat-v">${dash.totals.proposed}</div><div class="stat-l">Proposals</div></div>`;
+
+      document.getElementById("dashTop").innerHTML = dash.top.filter((q) => q.voteCount > 0).length
+        ? dash.top.filter((q) => q.voteCount > 0).map((q, i) => {
+            const cat = catStyle(q.category);
+            return `<div class="dash-item">
+              <div class="dash-rank">${i + 1}</div>
+              <div style="flex:1">
+                <div style="font-size:11px;font-weight:600;color:var(--orange);margin-bottom:4px">Q${q.num} · ${cat.label}</div>
+                <div style="font-size:14px;color:var(--text);line-height:1.45">${esc(q.text)}</div>
+              </div>
+              <div style="font-weight:700;color:#9a3412">${q.voteCount}</div>
+            </div>`;
+          }).join("")
+        : '<div class="loading">No votes yet.</div>';
+    }
+
+    document.querySelectorAll(".tab").forEach((tab) => {
+      tab.onclick = () => {
+        document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+        document.querySelectorAll(".panel").forEach((p) => p.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById("panel-" + tab.dataset.view).classList.add("active");
+        if (tab.dataset.view === "dashboard") loadDashboard();
+      };
+    });
+
+    document.getElementById("propSubmit").onclick = async () => {
+      const text = document.getElementById("propText").value.trim();
+      const category = document.getElementById("propCategory").value;
+      if (!text) return toast("Enter a question");
+      try {
+        await api("/api/questions", {
+          method: "POST",
+          body: JSON.stringify({ text, category, voterId }),
+        });
+        document.getElementById("propText").value = "";
+        toast("Proposal added");
+        document.querySelector('[data-view="vote"]').click();
+        await loadQuestions();
+      } catch (e) {
+        toast(e.message);
+      }
+    };
+
+    async function init() {
+      meta = await api("/api/meta");
+      document.getElementById("quotaText").innerHTML =
+        `Cast up to <strong>${meta.maxVotes} votes</strong> on questions you want in the interview guide. Anyone can leave comments on any question.`;
+      document.getElementById("propCategory").innerHTML = meta.categories
+        .map((c) => `<option value="${c.id}">${c.short ? c.short + ": " : ""}${c.label}</option>`).join("");
+      const authorInput = document.getElementById("authorName");
+      authorInput.value = localStorage.getItem("bd-author-name") || "";
+      authorInput.addEventListener("input", () => saveAuthorName(authorInput.value.trim()));
+      await loadQuestions();
+    }
+
+    init().catch((e) => {
+      document.getElementById("subline").textContent = "Could not connect to voting server";
+      document.getElementById("urlHint").style.display = "block";
+      document.getElementById("questionList").innerHTML =
+        `<div class="loading" style="padding:24px;text-align:left;max-width:520px;margin:0 auto">
+          <p style="margin-bottom:12px;color:#991b1b;font-weight:600">Server not reachable</p>
+          <p style="margin-bottom:12px;font-size:14px">Open a terminal and run:</p>
+          <pre style="background:#18181b;color:#fafafa;padding:14px;border-radius:8px;font-size:12px;overflow-x:auto">cd "/Users/adityasarna/UX STRATEGY/interview-voting"
+npm run seed
+npm start</pre>
+          <p style="margin-top:12px;font-size:14px">Then open <a href="http://localhost:3847" style="color:#f7931a">http://localhost:3847</a></p>
+          <p style="margin-top:8px;font-size:13px;color:#71717a">Error: ${esc(e.message)}</p>
+        </div>`;
+    });
+  </script>
+</body>
+</html>
